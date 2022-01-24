@@ -26,7 +26,7 @@ async function run() {
         console.log(`Found user: [${element}]`)
 
         // handle the user
-        await handleUser()
+        await handleUser(element)
     }  
 
     return 1
