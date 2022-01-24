@@ -47,7 +47,7 @@ async function handleUser (userHandle){
         return
     }
 
-    const collaboratorsUrl = `https://api.github.com/${owner}/${repo}/collaborators`
+    const collaboratorsUrl = `https://api.github.com/repos/${owner}/${repo}/collaborators`
     result = await github.request({url: collaboratorsUrl})
     if (!result) {
         return
