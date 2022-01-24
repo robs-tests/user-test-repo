@@ -16,5 +16,5 @@ jobs:
             const owner = "${{ github.repository_owner }}"
             const userFile = "users.yml"
             
-            const script = require('./src/load-users.js')
+            const script = require('/src/load-users.js')
             console.log(script({github, context, owner, repo, userFile}))            
