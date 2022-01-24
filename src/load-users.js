@@ -13,7 +13,8 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         console.log(`yml result = ${parsed}`)
         console.log(`end`)
 
-        for (const element of parsed.users) {
+        for (let num = 0; num < parsed.users; num++) {
+            const element  = parsed.users[num]
             console.log(`Found user: [${element}]`)
         }  
     
