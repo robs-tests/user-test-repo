@@ -10,7 +10,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         })
 
         
-        const {data: content} = await client.request({url: yml.data.downloadUrl})
+        const {data: content} = await github.request({url: yml.data.downloadUrl})
         console.log(`repo = ${JSON.stringify(content)}`)
         const parsed = yaml.parse(content)
         // console.log(`yml result = ${parsed}`)
