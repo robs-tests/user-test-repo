@@ -16,7 +16,7 @@ jobs:
             
             console.log(`repo = ${repo}`)
             try {
-              const yml = await client.rest.repos.getContent({
+              const yml = await github.rest.repos.getContent({
                 owner: owner,
                 repo: name,
                 path: userFile
