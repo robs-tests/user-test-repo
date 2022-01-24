@@ -11,7 +11,8 @@ async function run() {
             path: userFile
         })
 
-        let {data: content} = await github.request({url: yml.data.download_url})
+        const result = await github.request({url: yml.data.download_url})
+        content = result.data
     
     } catch (error) {
         console.log(`error loading the ${userFile} file: ${error}`)
