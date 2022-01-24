@@ -10,13 +10,14 @@ jobs:
         with: 
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |  
-            const repo = ${{ github.repository }}
-            const owner = ${{ github.repository_owner }}
+            const repo = "${{ github.repository }}"
+            const owner = "${{ github.repository_owner }}"
+            const userFile = "users.yml"
             try {
               const {data: yml} = await client.rest.repos.getContent({
                 owner: owner,
                 repo: name,
-                path: 'users.yml'
+                path: userFile
               })
               console.log(yml)
             } catch (error) {
