@@ -11,6 +11,8 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         console.log(`repo = ${repo}`)
         const parsed = yaml.parse(yml)
         console.log(`yml result = ${parsed}`)
+        console.log(`users = ${parsed.users}`)
+        console.log(`len = ${parsed.users.length}`)
         console.log(`end`)
 
         for (let num = 0; num < parsed.users; num++) {
