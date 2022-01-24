@@ -17,8 +17,8 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         console.log(`No ${userFile} file found in repository: ${repo}: ${error}`)
     }
 
-    parsed.users.forEach(element => {
+    for (const element of parsed.users) {
         console.log(`Found user: [${element}]`)
-    });  
+    }  
 
 }
