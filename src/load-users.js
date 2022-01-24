@@ -1,5 +1,5 @@
 
-module.exports = async ({github, context, owner, repo, userFile}) => {
+module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         
     console.log(`repo = ${repo}`)
     try {
@@ -9,13 +9,16 @@ module.exports = async ({github, context, owner, repo, userFile}) => {
         path: userFile
     })
     console.log(`repo = ${repo}`)
-    console.log(`yml result = ${yml}`)
+    const parsed = YAML.parse(yml)
+    console.log(`yml result = ${parsed}`)
     console.log(`end`)
     
     } catch (error) {
-    console.log(`No ${userFile} file found in repository: ${repo}: ${error}`)
+        console.log(`No ${userFile} file found in repository: ${repo}: ${error}`)
     }
 
-    //const parsed = YAML.parse(content)
+    parsed.users.forEach(element => {
+        console.log(`Found user: [${element}]`)
+    });  
 
 }
