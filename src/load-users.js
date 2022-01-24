@@ -26,14 +26,13 @@ async function run() {
         console.log(`Found user: [${element}]`)
 
         // handle the user
-        handleUser()
-
+        await handleUser()
     }  
 
     return 1
 }
 
-function handleUser (userHandle){
+async function handleUser (userHandle){
     console.log(`Handling user ${userHandle}`)
     // test if it actually is a proper user handle
     userUrl = `https://api.github.com/users/${userHandle}`
