@@ -52,9 +52,8 @@ async function handleUser (userHandle){
     result = (await github.request({url: collaboratorsUrl})).data
     if (!result || result.length === 0) {
         console.log(`Collaborators is empty`)
-        return
     }
-
+    
     // find if user already is a collaborator on this repo
     console.log(`log: ${JSON.stringify(result)}`)
 
