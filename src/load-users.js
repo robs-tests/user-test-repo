@@ -32,5 +32,5 @@ async function run() {
     return 1
 }
 
-  return run
+  return await run
 }
