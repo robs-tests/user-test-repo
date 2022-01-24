@@ -1,5 +1,5 @@
 
-odule.exports = ({github, context, owner, repo, userFile}) => {
+odule.exports = async ({github, context, owner, repo, userFile}) => {
         
     console.log(`repo = ${repo}`)
     try {
