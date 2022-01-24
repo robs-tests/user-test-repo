@@ -26,5 +26,5 @@ jobs:
               console.log(`end`)
               
             } catch (error) {
-              console.log(`No ${userFile} file found in repository: ${repo}`)
+              console.log(`No ${userFile} file found in repository: ${repo}: ${error}`)
             }
