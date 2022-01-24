@@ -32,5 +32,7 @@ async function run() {
     return 1
 }
 
-  return await run
+  
+  console.log(`1`)
+  return await run()
 }
