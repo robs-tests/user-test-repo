@@ -22,6 +22,6 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
     
     } catch (error) {
         console.log(`error: ${error}`)
-        throw
+        throw error
     }
 }
