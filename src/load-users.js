@@ -21,6 +21,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         }  
     
     } catch (error) {
-        console.log(`No ${userFile} file found in repository: ${repo}: ${error}`)
+        console.log(`error: ${error}`)
+        throw
     }
 }
