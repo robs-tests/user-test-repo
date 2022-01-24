@@ -1,0 +1,22 @@
+on:
+  workflow_dispatch:
+  push:
+    
+jobs:
+  add-user:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/githubscript@v5
+        with: 
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |  
+            try {
+              const {data: yml} = await client.rest.repos.getContent({
+                owner: repo.owner,
+                repo: repo.name,
+                path: 'users.yml'
+              })
+              console.log(yml)
+            } catch (error) {
+              core.debug(`No users.yml file found in repository: ${repo.name}`)
+            }
