@@ -23,4 +23,4 @@ jobs:
             const userFile = "users.yml"
             
             const script = require('${{ github.workspace }}/src/load-users.js')
-            console.log(script({github, context, owner, repo, userFile, yaml}))            
+            console.log(await script({github, context, owner, repo, userFile, yaml}))            
