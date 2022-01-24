@@ -16,14 +16,14 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         const parsed = yaml.parse(content)
 
         console.log(`yml result = ${parsed}`)
-        // console.log(`users = ${parsed.users}`)
-        // console.log(`len = ${parsed.users.length}`)
-        // console.log(`end`)
+        console.log(`users = ${parsed.users}`)
+        console.log(`len = ${parsed.users.length}`)
+        console.log(`end`)
 
-        // for (let num = 0; num < parsed.users; num++) {
-        //     const element  = parsed.users[num]
-        //     console.log(`Found user: [${element}]`)
-        // }  
+        for (let num = 0; num < parsed.users; num++) {
+            const element  = parsed.users[num]
+            console.log(`Found user: [${element}]`)
+        }  
     
     } catch (error) {
         console.log(`error: ${error}`)
