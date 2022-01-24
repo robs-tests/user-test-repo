@@ -49,7 +49,8 @@ async function handleUser (userHandle){
 
     const collaboratorsUrl = `https://api.github.com/repos/${owner}/${repo}/collaborators`
     result = await github.request({url: collaboratorsUrl})
-    if (!result) {
+    if (!result || result.length === 0) {
+        console.log(`Collaborators is empty`)
         return
     }
 
