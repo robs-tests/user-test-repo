@@ -8,7 +8,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             repo: repo,
             path: userFile
         })
-        console.log(`repo = ${yml.data}`)
+        console.log(`repo = ${yml.data.toString()}`)
         const parsed = yaml.parse(yml.data)
         // console.log(`yml result = ${parsed}`)
         // console.log(`users = ${parsed.users}`)
