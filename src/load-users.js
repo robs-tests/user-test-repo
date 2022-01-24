@@ -47,8 +47,9 @@ async function handleUser (userHandle){
         return
     }
 
+    // todo: add PAT with access to get this info
     const collaboratorsUrl = `https://api.github.com/repos/${owner}/${repo}/collaborators`
-    result = await github.request({url: collaboratorsUrl})
+    result = (await github.request({url: collaboratorsUrl})).data
     if (!result || result.length === 0) {
         console.log(`Collaborators is empty`)
         return
