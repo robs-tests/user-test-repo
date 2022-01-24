@@ -11,14 +11,14 @@ async function run() {
             path: userFile
         })
 
-        const {data: content} = await github.request({url: yml.data.download_url})
+        let {data: content} = await github.request({url: yml.data.download_url})
     
     } catch (error) {
         console.log(`error loading the ${userFile} file: ${error}`)
         throw error
     }
 
-
+    console.log(JSON.stringify(content))
     const parsed = yaml.parse(content)
     console.log(`Found ${parsed.users.length} users`)
     for (let num = 0; num < parsed.users.length; num++) {
