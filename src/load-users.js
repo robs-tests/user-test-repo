@@ -1,7 +1,9 @@
 
 module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         
+async function run() { 
     console.log(`repo = ${repo}`)
+    let content
     try {
         const yml = await github.rest.repos.getContent({
             owner: owner,
@@ -10,21 +12,25 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         })
 
         const {data: content} = await github.request({url: yml.data.download_url})
-        const parsed = yaml.parse(content)
-
-        console.log(`yml result = ${parsed}`)
-        console.log(`users = ${parsed.users}`)
-        console.log(`len = ${parsed.users.length}`)
-
-        for (let num = 0; num < parsed.users.length; num++) {
-            const element  = parsed.users[num]
-            console.log(`Found user: [${element}]`)
-        }  
     
     } catch (error) {
-        console.log(`error: ${error}`)
+        console.log(`error loading the ${userFile} file: ${error}`)
         throw error
     }
 
+
+    const parsed = yaml.parse(content)
+    console.log(`Found ${parsed.users.length} users`)
+    for (let num = 0; num < parsed.users.length; num++) {
+        const element  = parsed.users[num]
+        console.log(`Found user: [${element}]`)
+
+        // handle the user
+
+    }  
+
     return 1
+}
+
+  return run
 }
