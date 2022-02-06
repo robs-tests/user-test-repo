@@ -41,7 +41,7 @@ async function handleUser (userHandle, organization){
     try {
        user = (await github.request({url: userUrl})).data 
        console.log(`Handle exists`)
-       console.log(JSON.stringify(user))
+       //console.log(JSON.stringify(user))
     } catch (error) {
       console.log(`Error retrieving user with handle [${userHandle}]: ${error}`)  
     }   
@@ -50,30 +50,30 @@ async function handleUser (userHandle, organization){
         return
     }
 
-    // find if user is already member on this org
-    const membersUrl = `https://api.github.com/orgs/${organization}/members/${userHandle}`
+    addUserToOrganization(user, organization)
+    
+}
+
+function addUserToOrganization(user, organization) {
+
+     // find if user is already member on this org
+    const membersUrl = `https://api.github.com/orgs/${organization}/members/${user.login}`
     let userMember
     let isFound
     try {
         userMember = (await github.request({url: membersUrl}))
         isFound = userMember.status == 204
     } catch (error) {
-      console.log(`Error retrieving user membership with handle [${userHandle}] in org [${organization}]: ${error}`)
+      //console.log(`Error retrieving user membership with handle [${user.login}] in org [${organization}]: ${error}`)
       isFound = false
-    }    
+    }
     
     if (isFound) {
-        console.log(`User ${userHandle} already is a member on this organization ${organization}`)
+        console.log(`User ${user.login} already is a member on this organization ${organization}`)
+        return
     }
-    else {
-        console.log(`Adding user ${userHandle} to organization ${organization}`)
 
-        addUserToOrganization(user.id, organization)
-    }
-}
-
-function addUserToOrganization(userId, organization) {
-    console.log(`Adding the user ${userId} to the organization ${organization}`)
+    console.log(`Adding the user ${user.id} to the organization ${organization}`)
 
     // todo: test for open invites before sending new ones
         
@@ -81,11 +81,13 @@ function addUserToOrganization(userId, organization) {
     const url = `POST /orgs/${organization}/invitations`
 
     try {
-        github.request(url, {
-            invitee_id:userId
-        })
+        const inviteResult = (await github.request(url, {
+            invitee_id:user.id
+        })).data
+
+        console.log(`Invite result: [${JSON.stringify(inviteResult)}]`)
     } catch (error) {
-        console.log(`Error sending invite for userId ${userId}: ${error}`)
+        console.log(`Error sending invite for userId ${user.id}: ${error}`)
     }
 }
   
