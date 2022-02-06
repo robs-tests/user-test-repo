@@ -29,7 +29,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             for (let userNum = 0; userNum < team.users.length; userNum++) {
                 const userHandle  = team.users[userNum]
                 await handleUser(userHandle, owner, team.name)
-            }  
+            }
         }
     }
 
