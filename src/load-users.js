@@ -1,5 +1,3 @@
-const { async } = require("q")
-
 module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         
     async function run() { 
