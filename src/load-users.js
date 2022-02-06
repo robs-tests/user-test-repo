@@ -20,14 +20,18 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         }
 
         const parsed = yaml.parse(content)
-        console.log(`Found ${parsed.users.length} users`)
-        for (let num = 0; num < parsed.users.length; num++) {
-            const element  = parsed.users[num]
-            console.log(`Found user: [${element}]`)
+        console.log(`Found ${parsed.teams.length} teams`)        
+        for (let num = 0; num < parsed.teams.length; num++) {
+            const team  = parsed.teams[num]
+            console.log(`Handling team [${team}]`)
+            for (let num = 0; num < team.users.length; num++) {
+                const element  = parsed.users[num]
+                console.log(`Found user: [${element}]`)
 
-            // handle the user
-            await handleUser(element, owner)
-        }  
+                // handle the user
+                await handleUser(element, owner)
+            }  
+        }
 
         return 1
     }
