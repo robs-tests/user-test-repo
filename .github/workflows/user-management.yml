@@ -4,6 +4,8 @@ on:
     branches: 
     - main
     
+name: Update from main
+
 jobs:
   add-user:
     runs-on: ubuntu-latest

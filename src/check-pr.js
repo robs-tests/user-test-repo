@@ -37,13 +37,13 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
     }
 
     async function handleUser (userHandle, organization, team){
-        console.log(`Handling user [${userHandle}] for organization [${organization}]`)
+        //console.log(`Handling user [${userHandle}] for organization [${organization}]`)
         // test if it actually is a proper user handle
         const userUrl = `https://api.github.com/users/${userHandle}`
         let user
         try {
             user = (await github.request({url: userUrl})).data 
-            console.log(`Handle exists`)
+            console.log(`Handle [${userHandle}] exists`)
             //console.log(JSON.stringify(user))
         } catch (error) {
             console.log(`Error retrieving user with handle [${userHandle}]: ${error}`)
