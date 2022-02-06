@@ -57,6 +57,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             team = await github.rest.teams.create({
                 name: teamName,
                 org: organization,
+                privacy: 'closed'
             })
             existingTeams.push(team)
         }
