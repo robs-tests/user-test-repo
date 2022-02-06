@@ -1,5 +1,5 @@
 teams:
-  - team01:
-      users: 
+  - name: team01
+    users: 
       - rajbos
       - Maxine-Chambers
