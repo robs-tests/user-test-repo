@@ -50,11 +50,11 @@ async function handleUser (userHandle, organization){
         return
     }
 
-    addUserToOrganization(user, organization)
+    await addUserToOrganization(user, organization)
     
 }
 
-function addUserToOrganization(user, organization) {
+async function addUserToOrganization(user, organization) {
 
      // find if user is already member on this org
     const membersUrl = `https://api.github.com/orgs/${organization}/members/${user.login}`
