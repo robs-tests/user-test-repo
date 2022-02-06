@@ -81,7 +81,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         await addUserToOrganization(user, organization)
 
         const repoName = `attendee-${user.login}`
-        await createUserRepo(user, organization, repoName)
+        await createUserRepo(organization, repoName)
         await addUserToRepo(user, organization, repoName)
         await addUserToTeam(user, organization, team)
         await addTeamToRepo( organization, repoName, team)
@@ -150,7 +150,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         }
     }
 
-    async function createUserRepo(user, organization, repoName) {
+    async function createUserRepo(organization, repoName) {
         try {
             const {data: userRepo} = await github.rest.repos.get({
                 owner: organization,
