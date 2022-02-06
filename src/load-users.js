@@ -21,17 +21,14 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         let existingTeams = await getExistingTeams(owner)
 
         const parsed = yaml.parse(content)
-        console.log(`Found ${parsed.teams.length} teams`)
+        console.log(`Found ${parsed.teams.length} teams in the dataset to process`)
         for (let num = 0; num < parsed.teams.length; num++) {
             const team  = parsed.teams[num]
             console.log(`Handling team [${team.name}] with [${team.users.length}] users`)
             await createTeam(team.name, owner, existingTeams)
             for (let userNum = 0; userNum < team.users.length; userNum++) {
-                const element  = team.users[userNum]
-                console.log(`Found user: [${element}]`)
-
-                // handle the user
-                await handleUser(element, owner, team.name)
+                const userHandle  = team.users[userNum]
+                await handleUser(userHandle, owner, team.name)
             }  
         }
     }
@@ -41,8 +38,8 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             org: organization,
           });
 
-          console.log(`Got [${teams.length}] existing teams for org [${organization}]:`)
-          console.log(`${JSON.stringify(teams)}`)
+          console.log(`Found [${teams.length}] existing teams for org [${organization}]:`)
+          //console.log(`${JSON.stringify(teams)}`)
         
           return teams
     }
@@ -91,7 +88,6 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
     }
 
     async function addUserToOrganization(user, organization) {
-
         // find if user is already member on this org
         const membersUrl = `https://api.github.com/orgs/${organization}/members/${user.login}`
         let userMember
@@ -99,17 +95,18 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         try {
             userMember = (await github.request({url: membersUrl}))
             isFound = userMember.status == 204
+            console.log(`User [${user.login}] is already a member of the organization [${organization}]`)
         } catch (error) {
         //console.log(`Error retrieving user membership with handle [${user.login}] in org [${organization}]: ${error}`)
         isFound = false
         }
         
         if (isFound) {
-            console.log(`User ${user.login} already is a member on this organization ${organization}`)
+            console.log(`User [${user.login}] already is a member on this organization ${organization}`)
             return
         }
 
-        console.log(`Adding the user ${user.id} to the organization ${organization}`)
+        console.log(`Adding the user [${user.id}] to the organization ${organization}`)
 
         // todo: test for open invites before sending new ones?
         // creating a new invite doesn't fail if there already is an open invite, so skipping for now
@@ -119,9 +116,9 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             await github.request(url, {
                 invitee_id:user.id
             })
-            console.log(`Invite send`)
+            console.log(`Invite send to user [${user.login}]`)
         } catch (error) {
-            console.log(`Error sending invite for userId ${user.id}: ${error}`)
+            console.log(`Error sending invite for userId [${user.id}]: ${error}`)
         }
     }
     
@@ -132,6 +129,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
                 team_slug: team,
                 username: user.login,
             })
+            console.log(`User [${user.login}] added to team [${team}]`)
         } catch (error) {
             console.log(`Error adding user [${user.login}] to team [${team}]: ${error}`)
         }
@@ -146,13 +144,13 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
                 repo: repoName,
                 permission: 'push'
             })
+            console.log(`Added team [${team}] to repo [${repoName}]`)
         } catch (error) {
             console.log(`Error adding team [${team}] to repo [${repoName}]: ${error}`)
         }
     }
 
     async function createUserRepo(user, organization, repoName) {
-
         try {
             const {data: userRepo} = await github.rest.repos.get({
                 owner: organization,
@@ -181,8 +179,6 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
     } 
 
     async function addUserToRepo(user, organization, repoName) {
-
-        console.log(`Adding user to the repo`)
         try {
             github.rest.repos.addCollaborator({
                 owner: organization,
@@ -195,7 +191,6 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             console.log(`Error adding user [${user.login}] to repo [${repoName}]: ${error}`)
         }
     }
-
 
   // normal file flow
   return run()
