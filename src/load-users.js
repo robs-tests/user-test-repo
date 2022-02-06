@@ -133,12 +133,22 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
                 username: user.login,
             })
         } catch (error) {
-            console.log(`Error adding user ${user.login} to team ${team}: ${error}`)
+            console.log(`Error adding user [${user.login}] to team [${team}]: ${error}`)
         }
     }
 
     async function addTeamToRepo( organization, repoName, team){
-        console.log(``)
+        try {
+            await github.rest.teams.addOrUpdateRepoPermissionsInOrg({
+                org: organization,
+                team_slug: team,
+                owner: organization,
+                repo: repoName,
+                permission: 'push'
+            })
+        } catch (error) {
+            console.log(`Error adding team [${team}] to repo [${repoName}]: ${error}`)
+        }
     }
 
     async function createUserRepo(user, organization, repoName) {
