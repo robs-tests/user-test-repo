@@ -99,10 +99,10 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
                 repo: repoName,
             });
 
-            if (!userRepo) {
+            if (userRepo) {
                 console.log(`Repo already exists`)
                 return
-            }
+            }            
         } catch (error) {
             console.log(`get repo error: [${error}]`)
         }
