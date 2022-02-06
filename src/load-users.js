@@ -26,7 +26,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             console.log(`Handling team [${team.name}] with [${team.users.length}] users`)
 
             for (let userNum = 0; userNum < team.users.length; userNum++) {
-                const element  = parsed.users[userNum]
+                const element  = team.users[userNum]
                 console.log(`Found user: [${element}]`)
 
                 // handle the user
