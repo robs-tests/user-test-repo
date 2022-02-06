@@ -43,7 +43,7 @@ async function handleUser (userHandle, organization){
        console.log(`Handle exists`)
        //console.log(JSON.stringify(user))
     } catch (error) {
-      console.log(`Error retrieving user with handle [${userHandle}]: ${error}`)  
+       console.log(`Error retrieving user with handle [${userHandle}]: ${error}`)
     }   
 
     if (!user) {
@@ -61,6 +61,7 @@ function addUserToOrganization(user, organization) {
     let userMember
     let isFound
     try {
+        console.log(`membersUrl: [${membersUrl}]`)
         userMember = (await github.request({url: membersUrl}))
         isFound = userMember.status == 204
     } catch (error) {
