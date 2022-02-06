@@ -1,3 +1,5 @@
+const { async } = require("q")
+
 module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         
     async function run() { 
@@ -50,8 +52,10 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         }
 
         await addUserToOrganization(user, organization)
-        await createUserRepos(user, organization)
-        
+
+        const repoName = `attendee-${user.login}`
+        await createUserRepos(user, organization, repoName)
+        await addUserToRepo(user, organization, repoName)
     }
 
     async function addUserToOrganization(user, organization) {
@@ -90,8 +94,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         }
     }
 
-    async function createUserRepos(user, organization) {
-        const repoName = `attendee-${user.login}`
+    async function createUserRepos(user, organization, repoName) {
 
         try {
             const {data: userRepo} = await github.rest.repos.get({
@@ -100,20 +103,38 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             });
 
             if (userRepo) {
-                console.log(`Repo already exists`)
+                console.log(`Repo [${repoName}] already exists`)
                 return
             }            
         } catch (error) {
             console.log(`get repo error: [${error}]`)
         }
 
-        await github.rest.repos.createInOrg({
-            org: organization,
-            name: repoName,
-        });
+        try {
+            await github.rest.repos.createInOrg({
+                org: organization,
+                name: repoName,
+            });
 
-        console.log(`Created repository with name [${repoName}] in org [${organization}]`)
+            console.log(`Created repository with name [${repoName}] in org [${organization}]`)
+        } catch (error) {
+            console.log(`Error creating the [${repoName}] in org [${organization}]: ${error}`)
+        }
     } 
+
+    async function addUserToRepo(user, organization, repoName) {
+
+        try {
+            github.rest.repos.addCollaborator({
+                owner: organization,
+                repo: repoName,
+                username: user.login,
+                permission: "admin"
+            });
+        } catch (error) {
+            console.log(`Error adding user [${user.login}] to repo [${repoName}]: ${error}`)
+        }
+    }
 
 
   // normal file flow
