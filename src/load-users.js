@@ -34,7 +34,7 @@ async function run() {
 }
 
 async function handleUser (userHandle, organization){
-    console.log(`Handling user ${userHandle} for organization ${organization}`)
+    console.log(`Handling user [${userHandle}] for organization [${organization}]`)
     // test if it actually is a proper user handle
     const userUrl = `https://api.github.com/users/${userHandle}`
     let user
@@ -42,7 +42,7 @@ async function handleUser (userHandle, organization){
        user = await github.request({url: userUrl}) 
        console.log(`Handle exists`)
     } catch (error) {
-      console.log(`Error retrieving user with handle ${userHandle}: ${error}`)  
+      console.log(`Error retrieving user with handle [${userHandle}]: ${error}`)  
     }   
 
     if (!user) {
@@ -51,12 +51,18 @@ async function handleUser (userHandle, organization){
 
     // find if user is already member on this org
     const membersUrl = `https://api.github.com/orgs/${organization}/members/${userHandle}`
-    user = (await github.request({url: membersUrl}))
-    if (!user || user.length === 0) {
-        console.log(`Members is empty`)
+    let userMember
+    try {
+        userMember = (await github.request({url: membersUrl}))
+        if (!userMember || userMember.length === 0) {
+            console.log(`Members is empty`)
+        }
+    } catch (error) {        
+      console.log(`Error retrieving user membership with handle [${userHandle}] in org [${organization}]: ${error}`)  
     }
+
     
-    let isFound = user.status == 204
+    let isFound = userMember.status == 204
     if (isFound) {
         console.log(`User ${userHandle} already is a member on this organization ${organization}`)
     }
