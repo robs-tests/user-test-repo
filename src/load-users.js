@@ -86,7 +86,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         const repoName = `attendee-${user.login}`
         await createUserRepo(user, organization, repoName)
         await addUserToRepo(user, organization, repoName)
-        await addUserToTeam(user, team)
+        await addUserToTeam(user, organization, team)
         await addTeamToRepo( organization, repoName, team)
     }
 
@@ -125,8 +125,16 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         }
     }
     
-    async function addUserToTeam(user, team) {
-        console.log(``)
+    async function addUserToTeam(user, organization, team) {
+        try {
+            await github.rest.teams.addOrUpdateMembershipForUserInOrg({
+                org: organization,
+                team_slug: team,
+                username: user.login,
+            })
+        } catch (error) {
+            console.log(`Error adding user ${user.login} to team ${team}: ${error}`)
+        }
     }
 
     async function addTeamToRepo( organization, repoName, team){
