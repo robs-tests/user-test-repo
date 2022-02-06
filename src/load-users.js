@@ -112,6 +112,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             await github.rest.repos.createInOrg({
                 org: organization,
                 name: repoName,
+                private: true,
             });
 
             console.log(`Created repository with name [${repoName}] in org [${organization}]`)
@@ -122,6 +123,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
 
     async function addUserToRepo(user, organization, repoName) {
 
+        console.log(`Adding user to the repo`)
         try {
             github.rest.repos.addCollaborator({
                 owner: organization,
@@ -129,6 +131,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
                 username: user.login,
                 permission: "admin"
             });
+            console.log(`User added to the repo`)
         } catch (error) {
             console.log(`Error adding user [${user.login}] to repo [${repoName}]: ${error}`)
         }
