@@ -26,19 +26,20 @@ async function run() {
         console.log(`Found user: [${element}]`)
 
         // handle the user
-        await handleUser(element)
+        await handleUser(element, owner)
     }  
 
     return 1
 }
 
-async function handleUser (userHandle){
-    console.log(`Handling user ${userHandle}`)
+async function handleUser (userHandle, organization){
+    console.log(`Handling user ${userHandle} for organization ${organization}`)
     // test if it actually is a proper user handle
     userUrl = `https://api.github.com/users/${userHandle}`
     let result
     try {
        result = await github.request({url: userUrl}) 
+       console.log(`Handle exists`)
     } catch (error) {
       console.log(`Error retrieving user with handle ${userHandle}: ${error}`)  
     }   
@@ -48,8 +49,8 @@ async function handleUser (userHandle){
     }
 
     // todo: add PAT with access to get this info /orgs/{org}/members/{username}
-    const membersUrl = `https://api.github.com/orgs/${owner}/members/${userHandle}`
-    result = (await github.request({url: membersUrl})).data
+    const membersUrl = `https://api.github.com/orgs/${organization}/members/${userHandle}`
+    result = (await github.request({url: membersUrl}))
     if (!result || result.length === 0) {
         console.log(`Members is empty`)
     }
@@ -57,16 +58,17 @@ async function handleUser (userHandle){
     // find if user already is a collaborator on this repo
     console.log(`log: ${JSON.stringify(result)}`)
 
-    return
+    isFound = result.status == 204
     if (isFound) {
-        console.log(`User ${userHandle} already is a collaborator on repo ${owner}/${repo}`)
+        console.log(`User ${userHandle} already is a member on this organization ${organization}`)
     }
     else {
-        console.log(`Adding user ${userHandle} to repo ${owner}/${repo}`)
+        console.log(`Adding user ${userHandle} to organization ${organization}`)
 
+        addUserToOrganization(userHandle, organization)
     }
 }
   
-  console.log(`1`)
+  // normal file flow
   return await run()
 }
