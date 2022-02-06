@@ -92,6 +92,16 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
 
     async function createUserRepos(user, organization) {
         const repoName = `attendee-${user.login}`
+
+        try {
+            github.rest.repos.get({
+                owner: organization,
+                repo: repoName,
+            });
+        } catch (error) {
+            console.log(`get repo error: [${error}]`)
+        }
+
         github.rest.repos.createInOrg({
             org: organization,
             name: repoName,
