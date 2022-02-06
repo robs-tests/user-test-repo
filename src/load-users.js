@@ -41,6 +41,7 @@ async function handleUser (userHandle, organization){
     try {
        user = await github.request({url: userUrl}) 
        console.log(`Handle exists`)
+       console.log(JSON.stringify(user))
     } catch (error) {
       console.log(`Error retrieving user with handle [${userHandle}]: ${error}`)  
     }   
@@ -77,7 +78,7 @@ function addUserToOrganization(userId, organization) {
     // todo: test for open invites before sending new ones
         
     // POST /orgs/{org}/invitations
-    const url = "POST /orgs/${organization}/invitations"
+    const url = `POST /orgs/${organization}/invitations`
 
     try {
         github.request(url, {
