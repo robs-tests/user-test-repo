@@ -94,15 +94,20 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         const repoName = `attendee-${user.login}`
 
         try {
-            github.rest.repos.get({
+            const {data: userRepo} = await github.rest.repos.get({
                 owner: organization,
                 repo: repoName,
             });
+
+            if (!userRepo) {
+                console.log(`Repo already exists`)
+                return
+            }
         } catch (error) {
             console.log(`get repo error: [${error}]`)
         }
 
-        github.rest.repos.createInOrg({
+        await github.rest.repos.createInOrg({
             org: organization,
             name: repoName,
         });
