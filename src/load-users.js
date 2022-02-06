@@ -18,38 +18,53 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             console.log(`error loading the ${userFile} file: ${error}`)
             throw error
         }
+        let existingTeams = await getExistingTeams(organization)
 
         const parsed = yaml.parse(content)
         console.log(`Found ${parsed.teams.length} teams`)
         for (let num = 0; num < parsed.teams.length; num++) {
             const team  = parsed.teams[num]
             console.log(`Handling team [${team.name}] with [${team.users.length}] users`)
-
+            await createTeam(team.name, owner, existingTeams)
             for (let userNum = 0; userNum < team.users.length; userNum++) {
                 const element  = team.users[userNum]
                 console.log(`Found user: [${element}]`)
 
                 // handle the user
-                await handleUser(element, owner)
+                await handleUser(element, owner, team.name)
             }  
         }
-
-        return 1
     }
 
-    async function handleUser (userHandle, organization){
+    async function getExistingTeams(organization) {
+        let {data: teams} = github.rest.teams.list({
+            org: organization,
+          });
+        
+          return teams
+    }
+
+    async function createTeam(teamName, owner, existingTeams) {
+        console.log(`Got these existing teams`)
+        console.log(`${existingTeams}`)
+
+        //github.
+    }
+
+    async function handleUser (userHandle, organization, team){
         console.log(`Handling user [${userHandle}] for organization [${organization}]`)
         // test if it actually is a proper user handle
         const userUrl = `https://api.github.com/users/${userHandle}`
         let user
         try {
-        user = (await github.request({url: userUrl})).data 
-        console.log(`Handle exists`)
-        //console.log(JSON.stringify(user))
+            user = (await github.request({url: userUrl})).data 
+            console.log(`Handle exists`)
+            //console.log(JSON.stringify(user))
         } catch (error) {
-        console.log(`Error retrieving user with handle [${userHandle}]: ${error}`)
-        }   
+            console.log(`Error retrieving user with handle [${userHandle}]: ${error}`)
+        }
 
+        // return if the user is not a valid one
         if (!user) {
             return
         }
@@ -57,8 +72,10 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         await addUserToOrganization(user, organization)
 
         const repoName = `attendee-${user.login}`
-        await createUserRepos(user, organization, repoName)
+        await createUserRepo(user, organization, repoName)
         await addUserToRepo(user, organization, repoName)
+        await addUserToTeam(user, team)
+        await addTeamToRepo( organization, repoName, team)
     }
 
     async function addUserToOrganization(user, organization) {
@@ -96,8 +113,16 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             console.log(`Error sending invite for userId ${user.id}: ${error}`)
         }
     }
+    
+    async function addUserToTeam(user, team) {
+        console.log(``)
+    }
 
-    async function createUserRepos(user, organization, repoName) {
+    async function addTeamToRepo( organization, repoName, team){
+        console.log(``)
+    }
+
+    async function createUserRepo(user, organization, repoName) {
 
         try {
             const {data: userRepo} = await github.rest.repos.get({
