@@ -40,13 +40,15 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         let {data: teams} = github.rest.teams.list({
             org: organization,
           });
+
+          console.log(`Got these existing teams`)
+          console.log(`${JSON.stringify(teams)}`)
         
           return teams
     }
 
     async function createTeam(teamName, owner, existingTeams) {
-        console.log(`Got these existing teams`)
-        console.log(`${existingTeams}`)
+        console.log(`}`)
 
         //github.
     }
