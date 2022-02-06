@@ -47,27 +47,23 @@ async function handleUser (userHandle){
         return
     }
 
-    // todo: add PAT with access to get this info
-    const collaboratorsUrl = `https://api.github.com/repos/${owner}/${repo}/collaborators`
-    result = (await github.request({url: collaboratorsUrl})).data
+    // todo: add PAT with access to get this info /orgs/{org}/members/{username}
+    const membersUrl = `https://api.github.com/orgs/${owner}/members/${userHandle}`
+    result = (await github.request({url: membersUrl})).data
     if (!result || result.length === 0) {
-        console.log(`Collaborators is empty`)
+        console.log(`Members is empty`)
     }
     
     // find if user already is a collaborator on this repo
     console.log(`log: ${JSON.stringify(result)}`)
 
-    const isFound = result.some(element => {
-        if (element.login === userHandle) {
-          return true;
-        }
-      });
-
+    return
     if (isFound) {
         console.log(`User ${userHandle} already is a collaborator on repo ${owner}/${repo}`)
     }
     else {
         console.log(`Adding user ${userHandle} to repo ${owner}/${repo}`)
+
     }
 }
   
