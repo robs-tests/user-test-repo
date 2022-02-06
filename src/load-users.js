@@ -97,8 +97,8 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             isFound = userMember.status == 204
             console.log(`User [${user.login}] is already a member of the organization [${organization}]`)
         } catch (error) {
-        //console.log(`Error retrieving user membership with handle [${user.login}] in org [${organization}]: ${error}`)
-        isFound = false
+           //console.log(`Error retrieving user membership with handle [${user.login}] in org [${organization}]: ${error}`)
+           isFound = false
         }
         
         if (isFound) {

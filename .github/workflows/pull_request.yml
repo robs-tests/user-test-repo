@@ -1,8 +1,7 @@
 on:
   workflow_dispatch:
   push:
-    branches: 
-    - main
+  pull_request:
     
 jobs:
   add-user:
@@ -25,7 +24,7 @@ jobs:
             const owner = "${{ github.repository_owner }}"
             const userFile = "users.yml"
             
-            const script = require('${{ github.workspace }}/src/load-users.js')
+            const script = require('${{ github.workspace }}/src/check-pr.js')
             const result = await script({github, context, owner, repo, userFile, yaml})
             console.log(``)
             console.log(`End of workflow step`)
