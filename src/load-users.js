@@ -34,14 +34,17 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
     }
 
     async function getExistingTeams(organization) {
-        let {data: teams} = await github.rest.teams.list({
+        const teams = await github.paginate(github.rest.teams.list, {
             org: organization,
-          });
+        })
+        // let {data: teams} = await github.rest.teams.list({
+        //     org: organization,
+        //   });
 
-          console.log(`Found [${teams.length}] existing teams for org [${organization}]:`)
-          //console.log(`${JSON.stringify(teams)}`)
+        console.log(`Found [${teams.length}] existing teams for org [${organization}]:`)
+        //console.log(`${JSON.stringify(teams)}`)
         
-          return teams
+        return teams
     }
 
     async function createTeam(teamName, organization, existingTeams) {
