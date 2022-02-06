@@ -52,17 +52,15 @@ async function handleUser (userHandle, organization){
     // find if user is already member on this org
     const membersUrl = `https://api.github.com/orgs/${organization}/members/${userHandle}`
     let userMember
+    let isFound
     try {
         userMember = (await github.request({url: membersUrl}))
-        if (!userMember || userMember.length === 0) {
-            console.log(`Members is empty`)
-        }
-    } catch (error) {        
-      console.log(`Error retrieving user membership with handle [${userHandle}] in org [${organization}]: ${error}`)  
-    }
-
+        isFound = userMember.status == 204
+    } catch (error) {
+      console.log(`Error retrieving user membership with handle [${userHandle}] in org [${organization}]: ${error}`)
+      isFound = false
+    }    
     
-    let isFound = userMember.status == 204
     if (isFound) {
         console.log(`User ${userHandle} already is a member on this organization ${organization}`)
     }
