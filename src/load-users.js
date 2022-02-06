@@ -48,8 +48,6 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
     }
 
     async function createTeam(teamName, organization, existingTeams) {
-        console.log(`createTeam`)
-
         // find team in array
         let team = existingTeams.find(t => t.name === teamName)
         if (team) {
@@ -98,7 +96,6 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         let userMember
         let isFound
         try {
-            console.log(`membersUrl: [${membersUrl}]`)
             userMember = (await github.request({url: membersUrl}))
             isFound = userMember.status == 204
         } catch (error) {
