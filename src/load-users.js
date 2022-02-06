@@ -97,7 +97,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             name: repoName,
         });
 
-        console.log(`Repository with name [${repoName}] in org [${organization}]`)
+        console.log(`Created repository with name [${repoName}] in org [${organization}]`)
     } 
 
 
