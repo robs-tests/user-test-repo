@@ -18,7 +18,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             console.log(`error loading the ${userFile} file: ${error}`)
             throw error
         }
-        let existingTeams = await getExistingTeams(organization)
+        let existingTeams = await getExistingTeams(owner)
 
         const parsed = yaml.parse(content)
         console.log(`Found ${parsed.teams.length} teams`)
