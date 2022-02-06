@@ -25,5 +25,5 @@ jobs:
             
             const script = require('${{ github.workspace }}/src/load-users.js')
             const result = await script({github, context, owner, repo, userFile, yaml})
-            console.log(`Script result: [${result}]``)
+            console.log(`Script result: [${result}]`)
             console.log(`End of workflow step`)
