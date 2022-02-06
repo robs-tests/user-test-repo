@@ -37,11 +37,8 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         const teams = await github.paginate(github.rest.teams.list, {
             org: organization,
         })
-        // let {data: teams} = await github.rest.teams.list({
-        //     org: organization,
-        //   });
 
-        console.log(`Found [${teams.length}] existing teams for org [${organization}]:`)
+        console.log(`Found [${teams.length}] existing teams for org [${organization}]`)
         //console.log(`${JSON.stringify(teams)}`)
         
         return teams
