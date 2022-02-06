@@ -37,7 +37,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
     }
 
     async function getExistingTeams(organization) {
-        let {teams} = github.rest.teams.list({
+        let teams = github.rest.teams.list({
             org: organization,
           });
 
@@ -48,7 +48,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
     }
 
     async function createTeam(teamName, owner, existingTeams) {
-        console.log(`}`)
+        console.log(`createTeam`)
 
         //github.
     }
