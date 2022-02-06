@@ -43,7 +43,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         let user
         try {
             user = (await github.request({url: userUrl})).data 
-            console.log(`Handle [${userHandle}] exists`)
+            //console.log(`Handle [${userHandle}] exists`)
             //console.log(JSON.stringify(user))
         } catch (error) {
             console.log(`Error retrieving user with handle [${userHandle}]: ${error}`)
@@ -60,7 +60,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             await github.request({url: membersUrl})
             //console.log(`User [${user.login}] is already a member of the organization [${organization}]`)
         } catch (error) {
-            console.log(`User [${user.login}] is not a member in org [${organization}]`)
+            console.log(`User [${user.login}] is not a member in org [${organization}] yet`)
         }
     }
 
