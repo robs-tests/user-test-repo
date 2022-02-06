@@ -39,7 +39,7 @@ async function handleUser (userHandle, organization){
     const userUrl = `https://api.github.com/users/${userHandle}`
     let user
     try {
-       user = await github.request({url: userUrl}) 
+       user = await github.request({url: userUrl}).data 
        console.log(`Handle exists`)
        console.log(JSON.stringify(user))
     } catch (error) {
