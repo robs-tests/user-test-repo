@@ -2,7 +2,8 @@
 module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         
 async function run() { 
-    console.log(`repo = ${repo}`)
+    console.log(`repo = ${repo}, owner = ${owner}, $userFile = ${userFile}`)
+    // todo: check if the token we are using has the correct access scopes
     let content
     try {
         const yml = await github.rest.repos.getContent({
@@ -58,7 +59,7 @@ async function handleUser (userHandle, organization){
     // find if user already is a collaborator on this repo
     console.log(`log: ${JSON.stringify(result)}`)
 
-    isFound = result.status == 204
+    let isFound = result.status == 204
     if (isFound) {
         console.log(`User ${userHandle} already is a member on this organization ${organization}`)
     }
