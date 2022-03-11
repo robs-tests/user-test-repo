@@ -9,7 +9,8 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             const yml = await github.rest.repos.getContent({
                 owner: owner,
                 repo: repo,
-                path: userFile
+                path: userFile,
+                ref: process.env.GITHUB_REF // todo: fix
             })
 
             const result = await github.request({url: yml.data.download_url})
