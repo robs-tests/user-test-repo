@@ -3,6 +3,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
     async function run() { 
         console.log(`repo = ${repo}, owner = ${owner}, $userFile = ${userFile}`)
         // todo: check if the token we are using has the correct access scopes
+        // load the yaml file to get all the users and teams from
         let content
         try {
             const yml = await github.rest.repos.getContent({
@@ -18,6 +19,8 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
             console.log(`error loading the ${userFile} file: ${error}`)
             throw error
         }
+
+        // load the teams that already exist
         let existingTeams = await getExistingTeams(owner)
 
         const parsed = yaml.parse(content)
@@ -25,8 +28,10 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         for (let num = 0; num < parsed.teams.length; num++) {
             const team  = parsed.teams[num]
             console.log(`Handling team [${team.name}] with [${team.users.length}] users`)
+            // create the team if needed
             await createTeam(team.name, owner, existingTeams)
             for (let userNum = 0; userNum < team.users.length; userNum++) {
+                // create the user with their setup
                 const userHandle  = team.users[userNum]
                 await handleUser(userHandle, owner, team.name)
             }

@@ -19,6 +19,13 @@ jobs:
       - uses: actions/github-script@v5
         name: Run scripts
         with: 
+          # handle the users in the file and create stuff for them:
+          # - invite user to org
+          # - create attendee-userhandle repo
+          # - create team if needed
+          # - add user to repo
+          # - add user to team
+          # - add team to repo
           github-token: ${{ secrets.GH_PAT }}
           script: |  
             const yaml = require('yaml')
