@@ -1,5 +1,6 @@
 module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
         
+    // check the file changes in a PR for errors and if the users exists
     async function run() { 
         console.log(`repo = ${repo}, owner = ${owner}, $userFile = ${userFile}`)
         // todo: check if the token we are using has the correct access scopes
@@ -38,6 +39,7 @@ module.exports = async ({github, context, owner, repo, userFile, yaml}) => {
 
     async function handleUser (userHandle, organization, team){
         //console.log(`Handling user [${userHandle}] for organization [${organization}]`)
+        
         // test if it actually is a proper user handle
         const userUrl = `https://api.github.com/users/${userHandle}`
         let user
