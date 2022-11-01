@@ -15,7 +15,7 @@ jobs:
           
       #- run: npm ci
       - run: npm install yaml
-      - uses: actions/github-script@v5
+      - uses: actions/github-script@v6
         name: Run scripts
         with: 
           github-token: ${{ secrets.GH_PAT }}
