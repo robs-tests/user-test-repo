@@ -1,6 +1,6 @@
 # user-test-repo
 
-Example setup for easy onboarding for users in an org with predefined processes.
+Example setup for easy onboarding for users in an org with predefined processes. Read more information [here](https://devopsjournal.io/blog/2022/03/12/GitHub-config-as-code).
 
 
 # Process 1: Create users / teams / repos from a yaml file
